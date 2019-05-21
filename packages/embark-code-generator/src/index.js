@@ -422,11 +422,24 @@ class CodeGenerator {
   }
 
   buildContractJS(contractName, contractJSON, cb) {
-    let contractCode = "import EmbarkJS from '../embarkjs';\n";
-    contractCode += `let ${contractName}JSONConfig = ${JSON.stringify(contractJSON)};\n`;
-    contractCode += `let ${contractName} = new EmbarkJS.Blockchain.Contract(${contractName}JSONConfig);\n`;
+    const contractCode = `
+      "use strict";
 
-    contractCode += "export default " + contractName + ";\n";
+      const isNodeJS = (typeof process !== 'undefined' && process.versions && process.versions.node);
+      const lib = isNodeJS ? '../embarkjs.node' : '../embarkjs';
+      const EmbarkJS = require(lib);
+
+      let ${contractName}JSONConfig = ${JSON.stringify(contractJSON)};
+      let ${contractName} = new EmbarkJS.Blockchain.Contract(${contractName}JSONConfig);
+
+      // Browser compatibility
+      exports = (typeof exports === 'undefined') ? {} : exports;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.default = ${contractName};
+
+      // Node compatibility
+      module.exports = exports.default;
+    `.trim().replace(/^[\t\s]+/gm, '');
 
     this.generateArtifact(contractCode, contractName + '.js', constants.dappArtifacts.contractsJs, (err, path, _updated) => {
       cb(err, path);
