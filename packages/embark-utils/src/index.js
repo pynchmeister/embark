@@ -23,7 +23,23 @@ import {
 import { getAddressToContract, getTransactionParams } from './transactionUtils';
 import LongRunningProcessTimer from './longRunningProcessTimer';
 import AccountParser from './accountParser';
-import { dappPath, embarkPath, ipcPath, joinPath, tmpDir, urlJoin } from './pathUtils';
+import {
+  anchoredValue,
+  dappPath,
+  diagramPath,
+  embarkPath,
+  ipcPath,
+  joinPath,
+  pkgPath,
+  tmpDir,
+  urlJoin,
+  PWD,
+  DAPP_PATH,
+  DIAGRAM_PATH,
+  EMBARK_PATH,
+  PKG_PATH,
+  NODE_PATH
+} from './pathUtils';
 
 const { extendZeroAddressShorthand, replaceZeroAddressShorthand } = AddressUtils;
 
@@ -244,6 +260,7 @@ function errorMessage(e) {
 
 
 const Utils = {
+  anchoredValue,
   buildUrl,
   buildUrlFromConfig,
   joinPath,
@@ -257,6 +274,7 @@ const Utils = {
   canonicalHost,
   compact,
   copyToClipboard,
+  diagramPath,
   deconstructUrl,
   defaultCorsHost,
   defaultHost,
@@ -294,12 +312,19 @@ const Utils = {
   normalizeInput: logUtils.normalizeInput,
   LogHandler: require('./logHandler'),
   LongRunningProcessTimer,
+  pkgPath,
   prepareForCompilation,
   proposeAlternative,
   toChecksumAddress,
   toposort,
   AddressUtils,
-  AccountParser
+  AccountParser,
+  PWD,
+  DAPP_PATH,
+  DIAGRAM_PATH,
+  EMBARK_PATH,
+  PKG_PATH,
+  NODE_PATH
 };
 
 module.exports = Utils;
